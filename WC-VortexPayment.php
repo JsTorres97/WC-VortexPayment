@@ -1,28 +1,27 @@
 <?php
 /*
- * Plugin Name: WooCommerce Misha Payment Gateway
- * Plugin URI: https://rudrastyh.com/woocommerce/payment-gateway-plugin.html
+ * Plugin Name: WooCommerce VortexPayment Gateway
  * Description: Take credit card payments on your store.
- * Author: Jesus Torres
- * Author URI: http://rudrastyh.com
- * Version: 1.0.1
+ * Author: VortexPayment 
+ * Author URI: http://vortex-solutions.com.mx/
+ * Version: 1.0.0
  */
 /*
  * This action hook registers our PHP class as a WooCommerce payment gateway
  */
-add_filter( 'woocommerce_payment_gateways', 'misha_add_gateway_class' );
-function misha_add_gateway_class( $gateways ) {
-	$gateways[] = 'WC_Misha_Gateway'; // your class name is here
+add_filter( 'woocommerce_payment_gateways', 'VortexPayment_add_gateway_class' );
+function VortexPayment_add_gateway_class( $gateways ) {
+	$gateways[] = 'WC_VortexPayment_Gateway'; // your class name is here
 	return $gateways;
 }
  
 /*
  * The class itself, please note that it is inside plugins_loaded action hook
  */
-add_action( 'plugins_loaded', 'misha_init_gateway_class' );
-function misha_init_gateway_class() {
+add_action( 'plugins_loaded', 'VortexPayment_init_gateway_class' );
+function VortexPayment_init_gateway_class() {
  
-	class WC_Misha_Gateway extends WC_Payment_Gateway {
+	class WC_VortexPayment_Gateway extends WC_Payment_Gateway {
  
  		/**
  		 * Class constructor, more about it in Step 3
@@ -32,8 +31,8 @@ function misha_init_gateway_class() {
             $this->id = 'misha'; // payment gateway plugin ID
             $this->icon = 'http://vortex-solutions.com.mx/media/icons/VortexPaymentLogo.png'; // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true; // in case you need a custom credit card form
-            $this->method_title = 'Misha Gateway';
-            $this->method_description = 'Description of Misha payment gateway'; // will be displayed on the options page
+            $this->method_title = 'Vortex Payment Gateway';
+            $this->method_description = 'Acepta todas las tarjetas con Vortex Payment'; // will be displayed on the options page
          
             // gateways can support subscriptions, refunds, saved payment methods,
             // but in this tutorial we begin with simple payments
@@ -70,30 +69,30 @@ function misha_init_gateway_class() {
  
             $this->form_fields = array(
                 'enabled' => array(
-                    'title'       => 'Enable/Disable',
-                    'label'       => 'Enable Misha Gateway',
+                    'title'       => 'Activado/Desactivado',
+                    'label'       => 'Activar Vortex Payment Gateway',
                     'type'        => 'checkbox',
                     'description' => '',
-                    'default'     => 'no'
+                    'default'     => 'yes'
                 ),
                 'title' => array(
-                    'title'       => 'Title',
+                    'title'       => 'Título',
                     'type'        => 'text',
-                    'description' => 'This controls the title which the user sees during checkout.',
-                    'default'     => 'Credit Card',
+                    'description' => 'Esto controla el título que el usuario ve durante el pago.',
+                    'default'     => 'Vortex Payment',
                     'desc_tip'    => true,
                 ),
                 'description' => array(
-                    'title'       => 'Description',
+                    'title'       => 'Descripción',
                     'type'        => 'textarea',
-                    'description' => 'This controls the description which the user sees during checkout.',
-                    'default'     => 'Pay with your credit card via our super-cool payment gateway.',
+                    'description' => 'Esto controla la descripción que el usuario ve durante el proceso de pago.',
+                    'default'     => 'Paga con tu tarjeta de Débito/Crédito.',
                 ),
                 'testmode' => array(
-                    'title'       => 'Test mode',
-                    'label'       => 'Enable Test Mode',
+                    'title'       => 'Modo de prueba',
+                    'label'       => 'Activa el modo de prueba',
                     'type'        => 'checkbox',
-                    'description' => 'Place the payment gateway in test mode using test API keys.',
+                    'description' => 'Coloque la pasarela de pago en modo de prueba utilizando claves de API de prueba.',
                     'default'     => 'yes',
                     'desc_tip'    => true,
                 ),
@@ -140,15 +139,15 @@ function misha_init_gateway_class() {
          
             // I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
             echo '<div class="form-row form-row-wide"><label>Card Number <span class="required">*</span></label>
-                <input id="misha_ccNo" type="text" autocomplete="off">
+                <input id="VortexPayment_ccNo" type="text" autocomplete="off">
                 </div>
                 <div class="form-row form-row-first">
                     <label>Expiry Date <span class="required">*</span></label>
-                    <input id="misha_expdate" type="text" autocomplete="off" placeholder="MM / YY">
+                    <input id="VortexPayment_expdate" type="text" autocomplete="off" placeholder="MM / YY">
                 </div>
                 <div class="form-row form-row-last">
                     <label>Card Code (CVC) <span class="required">*</span></label>
-                    <input id="misha_cvv" type="password" autocomplete="off" placeholder="CVC">
+                    <input id="VortexPayment_cvv" type="password" autocomplete="off" placeholder="CVC">
                 </div>
                 <div class="clear"></div>';
          
@@ -184,17 +183,17 @@ function misha_init_gateway_class() {
             }
          
             // let's suppose it is our payment processor JavaScript that allows to obtain a token
-            wp_enqueue_script( 'misha_js', 'https://www.mishapayments.com/api/token.js' );
+            wp_enqueue_script( 'VortexPayment_js', 'https://www.VortexPaymentpayments.com/api/token.js' );
          
             // and this is our custom JS in your plugin directory that works with token.js
-            wp_register_script( 'woocommerce_misha', plugins_url( 'misha.js', __FILE__ ), array( 'jquery', 'misha_js' ) );
+            wp_register_script( 'woocommerce_VortexPayment', plugins_url( 'VortexPayment.js', __FILE__ ), array( 'jquery', 'VortexPayment_js' ) );
          
             // in most payment processors you have to use PUBLIC KEY to obtain a token
-            wp_localize_script( 'woocommerce_misha', 'misha_params', array(
+            wp_localize_script( 'woocommerce_VortexPayment', 'VortexPayment_params', array(
                 'publishableKey' => $this->publishable_key
             ) );
          
-            wp_enqueue_script( 'woocommerce_misha' );
+            wp_enqueue_script( 'woocommerce_VortexPayment' );
          
         }
  
