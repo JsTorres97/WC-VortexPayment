@@ -30,7 +30,7 @@ function vortex_init_gateway_class() {
  		public function __construct() {
  
             $this->id = 'vortex'; // payment gateway plugin ID
-            $this->icon = '../vortex-payment/media/VortexPaymentLogo.png'; // URL of the icon that will be displayed on checkout page near your gateway name
+            $this->icon = 'https://raw.githubusercontent.com/JsTorres97/Media/master/Vortex%20Payment/VortexPaymentLogo.png'; // URL of the icon that will be displayed on checkout page near your gateway name
             $this->method_title = 'Vortex Payment Gateway';
             $this->method_description = 'Recibe pagos con tarjeta en tu sitio web con Vortex Payement'; // will be displayed on the options page
          
